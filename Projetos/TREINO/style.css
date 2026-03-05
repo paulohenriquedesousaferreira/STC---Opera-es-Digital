@@ -15,7 +15,7 @@ body{
     align-items: center; /* centraliza os elementos filhos verticalmente */
     justify-content: center; /* centraliza os elementos filhos horizotalmente. O justify-content: center
 Este é o comando oficial do Flexbox para alinhar itens no eixo principal (horizontal, por padrão).
-Como você definiu o pai como display: flex, o justify-content consegue "pegar" o bloco do h2 e empurrá-lo exatamente para o meio do espaço disponível na largura da div. */
+Como você definiu o pai sdffdcomo display: flex, o justify-content consegue "pegar" o bloco do h2 e empurrá-lo exatamente para o meio do espaço disponível na largura da div. */
 
 }
 .container1{
