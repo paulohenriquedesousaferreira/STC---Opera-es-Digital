@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Taxas - Flavio de Melo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Taxas de Contato</h1>
+
+    <div class="equipe-card">
+        <div class="secao-titulo">Identificação da Equipe</div>
+        <div class="equipe-header">
+            <select class="select-equipe" id="equipe">
+                <option value="" disabled selected>PREFIXO...</option>
+                <option value="AGLE013M">AGLE013M</option>
+                <option value="AGLE003T">AGLE003T</option>
+                <option value="AGLE035T">AGLE035T</option>
+                <option value="AGLE003N">AGLE003N</option>
+                <option value="AGLE005N">AGLE005N</option>
+                <option value="AGLL012M">AGLL012M</option>
+                <option value="AGLC001M">AGLC001M</option>
+                <option value="AGLC002M">AGLC002M</option>
+                <option value="AGLC009M">AGLC009M</option>
+                <option value="AGLH001M">AGLH001M</option>
+            </select>
+        </div>
+
+        <div class="colaboradores-lista">
+            <div class="secao-titulo">Integrantes</div>
+            <div class="colaborador-linha">
+                <div class="cargo-label motorista-cor">Motorista</div>
+                <select class="select-nome" id="motorista">
+                    <option value="">Selecionar Motorista...</option>
+                </select>
+            </div>
+
+            <div class="colaborador-linha">
+                <div class="cargo-label eletricista-cor">Eletricista</div>
+                <select class="select-nome" id="eletricista">
+                    <option value="">Selecionar Eletricista...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="footer-registro">
+            <button class="btn-registrar-geral" id="btnSalvar" onclick="registrarTudo()">
+                Registrar Taxa de Contato
+            </button>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="btn-historico" onclick="abrirHistorico()">Ver Histórico e Pendências</button>
+    </div>
+
+    <div id="modalHistorico" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharHistorico()">&times;</span>
+            
+            <h2>Histórico de Registros</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Equipe</th>
+                            <th>Motorista</th>
+                            <th>Eletricista</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabela"></tbody>
+                </table>
+            </div>
+
+            <h2 style="margin-top: 30px; color: #e74c3c;">Pendentes de Hoje</h2>
+            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Colaboradores que ainda não constam nos registros de hoje:</p>
+            <div id="listaPendentes" class="pendentes-lista-vertical">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const todosColaboradores = [
+            "1460 - ALDAIR FERREIRA DOS SANTOS", "1412 - CARLOS DANIEL DE M SILVA", "1640 - DAHLIN ALVES DE OLIVEIRA",
+            "1458 - DENISVALDO VERAS DOS SANTOS", "1959 - DIEGO DIEFLEI ARAUJO DA COSTA", "1980 - DNILSON CORDELIO OLIVEIRO",
+            "1463 - ELISSANDRO BORGES BRITO", "1499 - FERNANDO SOARES DA SILVA", "1992 - FRANCISCO DE ASSIS DE OLIVEIRA",
+            "1645 - FRANCISCO DE ASSIS FELIX DA CONCEIÇÃO", "1623 - FRANCISCO MOACIR G O NETO", "1505 - FRANCISCO ROGERIO DE ARAUJO",
+            "1503 - GELSON GOMES DE SOUSA", "1464 - GUILHEME GONÇALVES DOS SANTOS", "1911 - HEGON RODRIGUES LIMA",
+            "1432 - ISRAEL FERREIRA DE SOUSA RODRIGUES", "1514 - JOÃO FERREIRA DE ANDRADE NETO", "1702 - JOSÉ ADÃO ANTUNES MENDES",
+            "1647 - JOSE KLEBER ANDRADE CABRAL", "1636 - LEANDRO SANTOS DE FARIAS", "1606 - LEONARDO PEIXOTO DIAS",
+            "1648 - LUCAS LOPES DA SILVA FERREIRA", "1709 - MARCOS ANTONIO SILVA", "1512 - MARCUS COUTINHO LUCENA",
+            "1450 - MARUILO ALVES RODRIGUES", "1496 - RAFAEL DA SILVA", "1422 - RAIMUNDO DINIZ DA SILVA",
+            "1712 - ROBSON BRANDÃO SOARES", "1964 - WELISON PEDRO PATRICIO DA SILVA"
+        ];
+
+        function carregarSelects() {
+            const selects = [document.getElementById('motorista'), document.getElementById('eletricista')];
+            selects.forEach(s => {
+                todosColaboradores.forEach(nome => {
+                    let opt = document.createElement('option');
+                    opt.value = nome;
+                    opt.innerHTML = nome;
+                    s.appendChild(opt);
+                });
+            });
+        }
+        carregarSelects();
+
+        function registrarTudo() {
+            const btn = document.getElementById('btnSalvar');
+            const equipe = document.getElementById('equipe').value;
+            const motorista = document.getElementById('motorista').value;
+            const eletricista = document.getElementById('eletricista').value;
+
+            if (!equipe || !motorista || !eletricista) {
+                alert("Selecione todos os campos!");
+                return;
+            }
+
+            const agora = new Date();
+            const data = agora.toLocaleDateString('pt-BR');
+            const hora = agora.toLocaleTimeString('pt-BR');
+
+            const novoRegistro = { data, hora, equipe, motorista, eletricista };
+
+            let registros = JSON.parse(localStorage.getItem('historicoTaxas')) || [];
+            registros.push(novoRegistro);
+            localStorage.setItem('historicoTaxas', JSON.stringify(registros));
+
+            btn.innerHTML = "✓ Registrado!";
+            btn.style.backgroundColor = "#27ae60";
+            
+            setTimeout(() => {
+                document.getElementById('equipe').selectedIndex = 0;
+                document.getElementById('motorista').selectedIndex = 0;
+                document.getElementById('eletricista').selectedIndex = 0;
+                btn.innerHTML = "Registrar Taxa de Contato";
+                btn.style.backgroundColor = "#2ecc71";
+            }, 1500);
+        }
+
+        function abrirHistorico() {
+            const corpo = document.getElementById('corpoTabela');
+            const listaPendentes = document.getElementById('listaPendentes');
+            let registros = JSON.parse(localStorage.getItem('historicoTaxas')) || [];
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            
+            let nomesQueJaFizeramHoje = [];
+            corpo.innerHTML = "";
+
+            registros.slice().reverse().forEach(r => {
+                if(r.data === hoje) {
+                    nomesQueJaFizeramHoje.push(r.motorista);
+                    nomesQueJaFizeramHoje.push(r.eletricista);
+                }
+                corpo.innerHTML += `<tr>
+                    <td>${r.data}</td>
+                    <td>${r.hora}</td>
+                    <td>${r.equipe}</td>
+                    <td>${r.motorista}</td>
+                    <td>${r.eletricista}</td>
+                </tr>`;
+            });
+
+            listaPendentes.innerHTML = "";
+            let pendentes = todosColaboradores.filter(nome => !nomesQueJaFizeramHoje.includes(nome));
+            
+            if(pendentes.length === 0) {
+                listaPendentes.innerHTML = "<p style='color:green; font-weight:bold;'>✅ Todos realizaram hoje!</p>";
+            } else {
+                pendentes.forEach(p => {
+                    listaPendentes.innerHTML += `<div class="linha-pendente">• ${p}</div>`;
+                });
+            }
+            document.getElementById('modalHistorico').style.display = "block";
+        }
+
+        function fecharHistorico() {
+            document.getElementById('modalHistorico').style.display = "none";
+        }
+    </script>
+</body>
+</html>

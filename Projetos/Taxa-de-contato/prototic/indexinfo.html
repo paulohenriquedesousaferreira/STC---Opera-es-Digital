@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Taxas - Flavio de Melo</title>
+    
+    <style>
+        /* --- ESTILOS (CSS): Aqui definimos a aparência para ser profissional. --- */
+
+        /* body: O corpo da página. Definimos cores que não cansam os olhos do supervisor. */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif; /* Fonte padrão de sistemas modernos. */
+            background-color: #f0f2f5; /* Cinza bem claro para o fundo, destacando o cartão branco. */
+            display: flex; /* Ativa o modo de alinhamento flexível. */
+            flex-direction: column; /* Organiza os itens de cima para baixo. */
+            align-items: center; /* Centraliza tudo horizontalmente na tela. */
+            padding: 15px; /* Espaço nas bordas para o conteúdo não "colar" no vidro do celular. */
+            margin: 0; /* Remove espaços inúteis nas bordas da página. */
+        }
+
+        /* h1: O título principal. Azul escuro para passar seriedade. */
+        h1 { color: #1a2a3a; margin-bottom: 20px; font-size: 22px; text-align: center; }
+
+        /* .equipe-card: O "envelope" branco que guarda as informações. */
+        .equipe-card {
+            width: 100%; /* Ocupa toda a largura disponível no celular. */
+            max-width: 500px; /* No computador, ele trava em 500px para não ficar esticado. */
+            background: white; /* Cor branca para parecer uma folha de papel limpa. */
+            padding: 20px; /* Espaço interno para o texto não bater nas bordas do card. */
+            border-radius: 12px; /* Cantos arredondados: passa uma sensação de app moderno. */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra suave para o card "flutuar" na tela. */
+            box-sizing: border-box; /* Garante que o padding não aumente o tamanho total do card. */
+        }
+
+        /* .secao-titulo: Legendas pequenas em cima dos campos. */
+        .secao-titulo {
+            font-size: 11px; /* Letra pequena para não roubar a atenção do campo principal. */
+            color: #95a5a6; /* Cinza médio: indica que é apenas uma instrução de preenchimento. */
+            font-weight: bold; /* Negrito para ser fácil de ler mesmo pequena. */
+            text-transform: uppercase; /* Letras maiúsculas para dar um ar de formulário oficial. */
+            margin: 15px 0 5px 0; /* Espaçamento para separar uma pergunta da outra. */
+        }
+
+        /* select: As caixas onde você clica para escolher a equipe ou nome. */
+        select {
+            width: 100%; /* Ocupa a largura total do card. */
+            padding: 12px; /* Espaço interno grande para ser fácil de clicar com o dedão. */
+            border-radius: 8px; /* Cantos levemente arredondados acompanhando o design. */
+            border: 1px solid #ddd; /* Borda fina e clara para não pesar visualmente. */
+            font-size: 15px; /* Tamanho de letra ideal para leitura rápida. */
+            background-color: #fff; /* Fundo branco para contraste com o texto preto. */
+        }
+
+        /* .colaborador-linha: O bloco cinza que agrupa o cargo e o nome. */
+        .colaborador-linha {
+            background: #f8f9fa; /* Cinza quase branco para destacar do fundo do card. */
+            padding: 12px; /* Espaço para os elementos internos respirarem. */
+            border-radius: 10px; /* Bordas arredondadas. */
+            margin-bottom: 10px; /* Espaço entre o bloco do motorista e o do eletricista. */
+            border-left: 4px solid #ddd; /* Barrinha lateral para dar um estilo de "item de lista". */
+        }
+
+        /* .cargo-label: A etiqueta colorida (Motorista/Eletricista). */
+        .cargo-label {
+            display: inline-block; /* Faz a etiqueta ocupar apenas o espaço do texto. */
+            padding: 3px 10px; /* Espaço interno da etiqueta. */
+            border-radius: 4px; /* Cantos quadrados com leve arredondamento. */
+            color: white; /* Texto branco para destacar no fundo colorido. */
+            font-size: 11px; /* Texto pequeno para não poluir. */
+            font-weight: bold; /* Negrito para rápida identificação do cargo. */
+            margin-bottom: 8px; /* Espaço entre a etiqueta e o nome abaixo dela. */
+        }
+
+        /* Cores dos Cargos: Azul Escuro para Motorista (Sério) e Laranja para Eletricista (Atenção). */
+        .motorista-cor { background: #34495e; }
+        .eletricista-cor { background: #f39c12; }
+
+        /* .btn-registrar-geral: O botão principal de ação. */
+        .btn-registrar-geral {
+            width: 100%; /* Largura total: impossível de errar o clique. */
+            padding: 18px; /* Botão alto para facilitar o toque no celular. */
+            background: #2ecc71; /* Verde "Sucesso": indica que é aqui que o trabalho é concluído. */
+            color: white; /* Texto branco. */
+            border: none; /* Sem bordas para um look mais "limpo". */
+            border-radius: 8px; /* Cantos arredondados. */
+            font-size: 16px; /* Letra grande para ser o item mais importante da tela. */
+            font-weight: bold; /* Negrito. */
+            cursor: pointer; /* No computador, mostra a "mãozinha" de clicar. */
+            margin-top: 10px; /* Espaço acima do botão. */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Taxas de Contato</h1>
+
+    <div class="equipe-card">
+        <div class="secao-titulo">Identificação da Equipe</div>
+        <select id="equipe">
+            <option value="" disabled selected>PREFIXO...</option>
+            <option value="AGLE013M">AGLE013M</option>
+            <option value="AGLE003T">AGLE003T</option>
+            <option value="AGLE035T">AGLE035T</option>
+            <option value="AGLE003N">AGLE003N</option>
+            <option value="AGLE005N">AGLE005N</option>
+            <option value="AGLL012M">AGLL012M</option>
+            <option value="AGLC001M">AGLC001M</option>
+            <option value="AGLC002M">AGLC002M</option>
+            <option value="AGLC009M">AGLC009M</option>
+            <option value="AGLH001M">AGLH001M</option>
+        </select>
+
+        <div class="secao-titulo">Integrantes</div>
+        <div class="colaborador-linha">
+            <div class="cargo-label motorista-cor">Motorista</div>
+            <select id="motorista">
+                <option value="" disabled selected>Selecionar Motorista...</option>
+                </select>
+        </div>
+
+        <div class="colaborador-linha">
+            <div class="cargo-label eletricista-cor">Eletricista</div>
+            <select id="eletricista">
+                <option value="" disabled selected>Selecionar Eletricista...</option>
+                </select>
+        </div>
+
+        <button class="btn-registrar-geral" id="btnSalvar" onclick="registrarTudo()">
+            Registrar Taxa de Contato
+        </button>
+    </div>
+
+    <script>
+        /* todosColaboradores: Lista mestra com os nomes oficiais. Se mudar o nome de alguém, muda aqui. */
+        const todosColaboradores = [
+            "1460 - ALDAIR FERREIRA DOS SANTOS", "1412 - CARLOS DANIEL DE M SILVA", "1640 - DAHLIN ALVES DE OLIVEIRA",
+            "1458 - DENISVALDO VERAS DOS SANTOS", "1959 - DIEGO DIEFLEI ARAUJO DA COSTA", "1980 - DNILSON CORDELIO OLIVEIRO",
+            "1463 - ELISSANDRO BORGES BRITO", "1499 - FERNANDO SOARES DA SILVA", "1992 - FRANCISCO DE ASSIS DE OLIVEIRA",
+            "1645 - FRANCISCO DE ASSIS FELIX DA CONCEIÇÃO", "1623 - FRANCISCO MOACIR G O NETO", "1505 - FRANCISCO ROGERIO DE ARAUJO",
+            "1503 - GELSON GOMES DE SOUSA", "1464 - GUILHEME GONÇALVES DOS SANTOS", "1911 - HEGON RODRIGUES LIMA",
+            "1432 - ISRAEL FERREIRA DE SOUSA RODRIGUES", "1514 - JOÃO FERREIRA DE ANDRADE NETO", "1702 - JOSÉ ADÃO ANTUNES MENDES",
+            "1647 - JOSE KLEBER ANDRADE CABRAL", "1636 - LEANDRO SANTOS DE FARIAS", "1606 - LEONARDO PEIXOTO DIAS",
+            "1648 - LUCAS LOPES DA SILVA FERREIRA", "1709 - MARCOS ANTONIO SILVA", "1512 - MARCUS COUTINHO LUCENA",
+            "1450 - MARUILO ALVES RODRIGUES", "1496 - RAFAEL DA SILVA", "1422 - RAIMUNDO DINIZ DA SILVA",
+            "1712 - ROBSON BRANDÃO SOARES", "1964 - WELISON PEDRO PATRICIO DA SILVA"
+        ];
+
+        /* carregarSelects: Função que "escreve" os nomes da lista acima dentro dos menus de escolha. */
+        function carregarSelects() {
+            const m = document.getElementById('motorista'); // Pega a caixa do motorista.
+            const e = document.getElementById('eletricista'); // Pega a caixa do eletricista.
+            // Para cada nome na lista, cria uma nova "Opção" dentro do menu.
+            todosColaboradores.forEach(n => {
+                m.options[m.options.length] = new Option(n, n);
+                e.options[e.options.length] = new Option(n, n);
+            });
+        }
+        // window.onload: Manda o navegador preencher as listas assim que a página abrir.
+        window.onload = carregarSelects;
+
+        /* registrarTudo: A função que salva os dados quando você clica no botão verde. */
+        function registrarTudo() {
+            const btn = document.getElementById('btnSalvar'); // Pega o botão para mudar a cor depois.
+            const eq = document.getElementById('equipe').value; // Pega o Prefixo escolhido.
+            const mot = document.getElementById('motorista').value; // Pega o Motorista escolhido.
+            const ele = document.getElementById('eletricista').value; // Pega o Eletricista escolhido.
+
+            // IF: Se algum campo estiver vazio, avisa o usuário e para o processo.
+            if (!eq || !mot || !ele) { alert("Preencha tudo!"); return; }
+
+            // Cria a data e hora do registro automaticamente.
+            const agora = new Date();
+            const data = agora.toLocaleDateString('pt-BR');
+            const hora = agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+
+            // Monta o "pacote" com os dados do registro.
+            const reg = { data, hora, equipe: eq, motorista: mot, eletricista: ele };
+            
+            // localStorage: Salva os dados na memória do navegador do celular.
+            // Tenta pegar o histórico antigo ou cria um novo se estiver vazio.
+            let historico = JSON.parse(localStorage.getItem('historicoTaxas')) || [];
+            historico.push(reg); // Adiciona o novo registro na lista.
+            localStorage.setItem('historicoTaxas', JSON.stringify(historico)); // Salva a lista atualizada.
+
+            // Feedback Visual: Muda o botão para verde escuro e escreve "Registrado" para dar certeza ao usuário.
+            btn.innerHTML = "✓ REGISTRADO!";
+            btn.style.backgroundColor = "#27ae60";
+            
+            // setTimeout: Espera 1 segundo e meio e limpa os campos para o próximo registro.
+            setTimeout(() => {
+                document.getElementById('equipe').selectedIndex = 0;
+                document.getElementById('motorista').selectedIndex = 0;
+                document.getElementById('eletricista').selectedIndex = 0;
+                btn.innerHTML = "Registrar Taxa de Contato";
+                btn.style.backgroundColor = "#2ecc71";
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

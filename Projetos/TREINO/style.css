@@ -1,0 +1,57 @@
+body{
+    display: flex; /* exibe os elementos filhos em linha */
+    justify-content: center; /* centraliza os elementos filhos horizontalmente */
+    align-items: center; /* centraliza os elementos filhos verticalmente */
+    height: 100vh; /* Faz o body ter 100% da altura da janela (Viewport Height). O vh significa "view height". 100vh diz: "fique do tamanho total da janela que eu estou vendo". Agora que o body tem altura, o align-items tem espaço para colocar as divs no meio.*/
+    margin: 0; /* Remove a margem padrão que pode criar barras de rolagem */
+
+}
+.container{
+    display: flex; /* exibe os elementos filhos em linha */
+    margin: 5px; /* margem em torno da div dos 4 lados */
+    border: 2px solid black;/* bordas em torno da div */
+    width: 300px; /*tamanho Horizontal da div */
+    height: 300px; /*tamanho vertical da div */
+    align-items: center; /* centraliza os elementos filhos verticalmente */
+    justify-content: center; /* centraliza os elementos filhos horizotalmente. O justify-content: center
+Este é o comando oficial do Flexbox para alinhar itens no eixo principal (horizontal, por padrão).
+Como você definiu o pai como display: flex, o justify-content consegue "pegar" o bloco do h2 e empurrá-lo exatamente para o meio do espaço disponível na largura da div. */
+
+}
+.container1{
+    display: flex;
+    margin: 5px;
+    border: 2px solid blue;
+    width: 300px;
+    height:300px;
+    align-items: center;
+    justify-content: center;
+
+}
+.container2{
+    display: flex;
+    margin: 5px;
+    border: 2px solid red;
+    width: 300px;
+    height: 300px;
+    align-items:center;
+    justify-content: center;
+
+}
+.container:hover{
+    background-color:rosybrown;
+    border: 2px solid rosybrown;
+    font-size: 25px;
+
+}
+.container1:hover{
+    background-color: blue;
+    border: 2px solid blue;
+    font-size: 25px;
+
+}
+.container2:hover{
+    background-color: #ff007f;
+    border: 2px solid #ff007f; 
+    font-size: 25px;
+}
