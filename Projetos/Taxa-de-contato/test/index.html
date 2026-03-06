@@ -122,189 +122,167 @@
         </div>
     </div>
 
-    <script>
-        const eqFlavio = ["ALDAIR FERREIRA DOS SANTOS", "CARLOS DANIEL DE M SILVA", "DAHLIN ALVES DE OLIVEIRA", "DENISVALDO VERAS DOS SANTOS", "DIEGO DIEFLEI ARAÚJO DA COSTA", "DNILSON CORNELIO OLIVEIRA", "ELISSANDRO BORGES BRITO", "FERNANDO SOARES DA SILVA", "FRANCISCO DE ASSIS DE OLIVEIRA", "FRANCISCO DE ASSIS FELIX DA CONCEIÇÃO", "FRANCISCO MOACIR G O NETO", "FRANCISCO ROGERIO DE ARAUJO", "GELSON GOMES DE SOUSA", "GUILHEME GONÇALVES DOS SANTOS", "HEGON RODRIGUES LIMA", "ISRAEL FERREIRA DE SOUSA RODRIGUES", "JOÃO FERREIRA DE ANDRADE NETO", "JOSÉ ADÃO ANTUNES MENDES", "JOSE KLEBER ANDRADECABRAL", "LEANDRO SANTOS DE FARIAS", "LEONARDO PEIXOTO DIAS", "LUCAS LOPES DA SILVA FERREIRA", "MARCOS ANTONIO SILVA", "MARCUS COUTINHO LUCENA", "MARUILO ALVES RODRIGUES", "RAFAEL DA SILVA", "RAIMUNDO DINIZ DA SILVA", "ROBSON BRANDÃO SOARES", "WELISON PEDRO PATRICIO DA SILVA"].sort();
-        const eqDanilo = ["ADÃO MANUEL DE ARAUJO", "ANDERSON VERAS MOREIRAS", "CELIO SILVA DE JESUS", "CLECIO ALVES DOS SANTOS", "DEONE BERNARDES DOS SANTOS", "DEUZIMAR ALVES DA COSTA", "EDCARLOS DE JESUS CARNEIRO", "ELITON JOSÉ RIBEIRO", "FRANCISCO SILVA RODRIGUES", "GABRIEL LEANDRO MATIAS", "GUILHERME AZEVEDO DE ARAUJO", "HELIO PEREIRA DOS SANTOS", "JONATHA MARTINS DE FREITAS", "JONES PASSOS DA CUNHA", "JOSMAR CELESTIANO DA SILVA JUNIOR", "LEONARDO RODRIGUES PEREIRA LIMA", "LUCAS GABRIEL TORRES DA SILVA", "LUIZ FILIPE TELES CARVALHO", "MANOEL MARTINS DA SILVA", "ODELIO GUEDES DE JESUS", "PAULO CESAR DA SILVA", "PAULO HENRIQUE DE SOUSA FERREIRA C", "PAULO RIBEIRO DO NASCIMENTO", "RAIMUNDO RODRIGUES DOS SANTOS", "SILAS LIOMAR SILVA DE LIMA", "SUMAISSON DA SILVA ALMEIDA", "TIAGO SANTOS ARAUJO", "VALDECI VALENTIM DE SOUSA", "WEULISMAR FERREIRA DOS SANTOS FELIX"].sort();
-        const eqDionatan = ["ADERLAN MELO DE SOUZA", "ALEXANDRE DE SOUZA SILVA", "ANTONIO RAISSON ALVES PINHEIRO", "CLAUDIO PERREIRA DE SÁ", "CRISTIANO FERREIRA DE ARRUDA", "DIONIZIO PAULINO DA FONSECA", "DOUGLAS NASCIMENTO SOARES", "EDSON JOSE DA SILVA JUNIOR", "FABIO RUBENS ALENCAR DOS SANTOS", "FLAVIO DE MELO RIBEIRO", "GUSTAVO ALVES DE SOUSA ARAGÃO", "IVANILSON DA SILVA LOPES", "IVONILDO MOURA FIHO", "JEAN RODRIGUES DA SILVA", "JOÃO LUIZ PAULINO DA FONSECA", "JOÃO PAULO ROCHA DE LIMA", "JOEL ALVES LIMA", "JOSE DE RIBAMAR DA SILVA NEVES", "JOSE LUIZ ARAGÃO JUNIOR", "JOSE MARCOS BONFIM DE ARAUJO", "JOSE ROMARIO ROCHA DE SOUZA", "LUAN AUGUSTO FRANÇA CONCEIÇÃO", "MARCELO ALVES DA SILVA", "MARCELO AMADO DA SILVA", "RAYDSON PEREIRA ALENCAR", "ROGERIO MARQUER DA SILVA", "RONALDO SENA MARQUES", "RUBEM SOARES PINTO", "SAMUEL ALVES LIMA", "SAMUEL CLESLEY ALVES MIRANDA", "SEBASTIÃO PEREIRA DA SILVA", "TIAGO MENDES LIMA", "VALDIMAR SOUZA ALVES", "WARLEY SATELES DOS SANTOS"].sort();
-        const eqRomullo = ["AILTON FREITAS DE AMORIM", "AMARILDO DE JESUS GONÇALVES", "ANTONIO DE PADUA LOPES ROMANO", "DALMI P. DOS SANTOS", "DONIZETE BELTRÃO DOS SANTOS", "EDIMILSON RIBEIRO DA SILVA", "EDUARDO XAVIER DE ARAUJO", "ELIEZ ALVES MADUREIRA", "ERASMO PEREIRA ALVES", "JANES DE ARAUJO CARDOSO", "JOSE LINALDO BARBOSA DE SOUZA", "KAIO DA COSTA E SOUZA", "LINDOMAR ROCHA PEREIRA", "LUCINEI RODRIGUES FIGUEIREDO", "LUIZ RODRIGUES LEAL", "RAFAEL DA ROCHA SANTOS", "REGIS PEREIRA XAVIER", "RENATO DA SILVA RODRIGUES", "TIAGO BRAZ DE OLIVEIRA", "WALDE ADRIANO ALVES DE SOUSA"].sort();
-        
-        const listaMestre = [...eqFlavio, ...eqDanilo, ...eqDionatan, ...eqRomullo].sort();
+   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        const equipesDanilo = ["AGLC003M", "AGLC008M", "AGLE002M", "AGLE006M", "AGLE011M", "AGLE013M", "AGLL001M", "AGLL005M", "AGLL007M", "AGLH002M"];
-        const equipesDionatan = ["AGLE007T", "AGLE008T", "AGLE010T", "AGLE014T", "AGLE033T", "AGLE035T", "AGLE005N", "AGLL003M", "AGLL004M", "AGLL009M"];
-        const equipesFlavio = ["AGLC001M", "AGLC002M", "AGLC009M", "AGLE007M", "AGLE008M", "AGLE010M", "AGLE013T", "AGLE003N", "AGLL012M", "AGLH001M"];
-        const equipesRomullo = ["AGLE036M", "AGLE002T", "AGLE003T", "AGLE006T", "AGLE037N", "AGLL008M", "AGLL010M"];
-        const todasEquipes = [...equipesDanilo, ...equipesDionatan, ...equipesFlavio, ...equipesRomullo].sort();
+    // 1. CONFIGURAÇÃO DO FIREBASE (SUBSTITUA PELOS SEUS DADOS DO CONSOLE)
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY",
+        authDomain: "SEU_PROJETO.firebaseapp.com",
+        projectId: "SEU_PROJETO",
+        storageBucket: "SEU_PROJETO.appspot.com",
+        messagingSenderId: "SEU_ID",
+        appId: "SEU_APP_ID"
+    };
 
-        let userAtivo = null;
-        const usuarios = {
-            "1828": {s:"1828", p:"FLAVIO", n:"Flávio de Melo", lista: eqFlavio, eqs: equipesFlavio},
-            "1001": {s:"123", p:"DANILO", n:"Danilo da Paz", lista: eqDanilo, eqs: equipesDanilo},
-            "1002": {s:"123", p:"DIONATAN", n:"Dionatan Silva", lista: eqDionatan, eqs: equipesDionatan},
-            "1003": {s:"123", p:"ROMULLO", n:"Romullo Ubaldino", lista: eqRomullo, eqs: equipesRomullo},
-            "#sesmt": {s:"@sesmt", p:"SESMT", n:"SESMT", lista: listaMestre, eqs: todasEquipes},
-            "1000": {s:"456", p:"COORD", n:"Valdivino Siqueira", lista: listaMestre, eqs: todasEquipes},
-            "#admin": {s:"admin", p:"ADM", n:"Administrador", lista: listaMestre, eqs: todasEquipes}
+    // Inicialização
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+
+    // Variáveis de Estado
+    let registrosGlobais = [];
+    let userAtivo = null;
+
+    // --- DADOS FIXOS DO SEU APP ---
+    const eqFlavio = ["ALDAIR FERREIRA DOS SANTOS", "CARLOS DANIEL DE M SILVA", "DAHLIN ALVES DE OLIVEIRA", "DENISVALDO VERAS DOS SANTOS", "DIEGO DIEFLEI ARAÚJO DA COSTA", "DNILSON CORNELIO OLIVEIRA", "ELISSANDRO BORGES BRITO", "FERNANDO SOARES DA SILVA", "FRANCISCO DE ASSIS DE OLIVEIRA", "FRANCISCO DE ASSIS FELIX DA CONCEIÇÃO", "FRANCISCO MOACIR G O NETO", "FRANCISCO ROGERIO DE ARAUJO", "GELSON GOMES DE SOUSA", "GUILHEME GONÇALVES DOS SANTOS", "HEGON RODRIGUES LIMA", "ISRAEL FERREIRA DE SOUSA RODRIGUES", "JOÃO FERREIRA DE ANDRADE NETO", "JOSÉ ADÃO ANTUNES MENDES", "JOSE KLEBER ANDRADECABRAL", "LEANDRO SANTOS DE FARIAS", "LEONARDO PEIXOTO DIAS", "LUCAS LOPES DA SILVA FERREIRA", "MARCOS ANTONIO SILVA", "MARCUS COUTINHO LUCENA", "MARUILO ALVES RODRIGUES", "RAFAEL DA SILVA", "RAIMUNDO DINIZ DA SILVA", "ROBSON BRANDÃO SOARES", "WELISON PEDRO PATRICIO DA SILVA"].sort();
+    const eqDanilo = ["ADÃO MANUEL DE ARAUJO", "ANDERSON VERAS MOREIRAS", "CELIO SILVA DE JESUS", "CLECIO ALVES DOS SANTOS", "DEONE BERNARDES DOS SANTOS", "DEUZIMAR ALVES DA COSTA", "EDCARLOS DE JESUS CARNEIRO", "ELITON JOSÉ RIBEIRO", "FRANCISCO SILVA RODRIGUES", "GABRIEL LEANDRO MATIAS", "GUILHERME AZEVEDO DE ARAUJO", "HELIO PEREIRA DOS SANTOS", "JONATHA MARTINS DE FREITAS", "JONES PASSOS DA CUNHA", "JOSMAR CELESTIANO DA SILVA JUNIOR", "LEONARDO RODRIGUES PEREIRA LIMA", "LUCAS GABRIEL TORRES DA SILVA", "LUIZ FILIPE TELES CARVALHO", "MANOEL MARTINS DA SILVA", "ODELIO GUEDES DE JESUS", "PAULO CESAR DA SILVA", "PAULO HENRIQUE DE SOUSA FERREIRA C", "PAULO RIBEIRO DO NASCIMENTO", "RAIMUNDO RODRIGUES DOS SANTOS", "SILAS LIOMAR SILVA DE LIMA", "SUMAISSON DA SILVA ALMEIDA", "TIAGO SANTOS ARAUJO", "VALDECI VALENTIM DE SOUSA", "WEULISMAR FERREIRA DOS SANTOS FELIX"].sort();
+    const eqDionatan = ["ADERLAN MELO DE SOUZA", "ALEXANDRE DE SOUZA SILVA", "ANTONIO RAISSON ALVES PINHEIRO", "CLAUDIO PERREIRA DE SÁ", "CRISTIANO FERREIRA DE ARRUDA", "DIONIZIO PAULINO DA FONSECA", "DOUGLAS NASCIMENTO SOARES", "EDSON JOSE DA SILVA JUNIOR", "FABIO RUBENS ALENCAR DOS SANTOS", "FLAVIO DE MELO RIBEIRO", "GUSTAVO ALVES DE SOUSA ARAGÃO", "IVANILSON DA SILVA LOPES", "IVONILDO MOURA FIHO", "JEAN RODRIGUES DA SILVA", "JOÃO LUIZ PAULINO DA FONSECA", "JOÃO PAULO ROCHA DE LIMA", "JOEL ALVES LIMA", "JOSE DE RIBAMAR DA SILVA NEVES", "JOSE LUIZ ARAGÃO JUNIOR", "JOSE MARCOS BONFIM DE ARAUJO", "JOSE ROMARIO ROCHA DE SOUZA", "LUAN AUGUSTO FRANÇA CONCEIÇÃO", "MARCELO ALVES DA SILVA", "MARCELO AMADO DA SILVA", "RAYDSON PEREIRA ALENCAR", "ROGERIO MARQUER DA SILVA", "RONALDO SENA MARQUES", "RUBEM SOARES PINTO", "SAMUEL ALVES LIMA", "SAMUEL CLESLEY ALVES MIRANDA", "SEBASTIÃO PEREIRA DA SILVA", "TIAGO MENDES LIMA", "VALDIMAR SOUZA ALVES", "WARLEY SATELES DOS SANTOS"].sort();
+    const eqRomullo = ["AILTON FREITAS DE AMORIM", "AMARILDO DE JESUS GONÇALVES", "ANTONIO DE PADUA LOPES ROMANO", "DALMI P. DOS SANTOS", "DONIZETE BELTRÃO DOS SANTOS", "EDIMILSON RIBEIRO DA SILVA", "EDUARDO XAVIER DE ARAUJO", "ELIEZ ALVES MADUREIRA", "ERASMO PEREIRA ALVES", "JANES DE ARAUJO CARDOSO", "JOSE LINALDO BARBOSA DE SOUZA", "KAIO DA COSTA E SOUZA", "LINDOMAR ROCHA PEREIRA", "LUCINEI RODRIGUES FIGUEIREDO", "LUIZ RODRIGUES LEAL", "RAFAEL DA ROCHA SANTOS", "REGIS PEREIRA XAVIER", "RENATO DA SILVA RODRIGUES", "TIAGO BRAZ DE OLIVEIRA", "WALDE ADRIANO ALVES DE SOUSA"].sort();
+    
+    const listaMestre = [...eqFlavio, ...eqDanilo, ...eqDionatan, ...eqRomullo].sort();
+    const equipesDanilo = ["AGLC003M", "AGLC008M", "AGLE002M", "AGLE006M", "AGLE011M", "AGLE013M", "AGLL001M", "AGLL005M", "AGLL007M", "AGLH002M"];
+    const equipesDionatan = ["AGLE007T", "AGLE008T", "AGLE010T", "AGLE014T", "AGLE033T", "AGLE035T", "AGLE005N", "AGLL003M", "AGLL004M", "AGLL009M"];
+    const equipesFlavio = ["AGLC001M", "AGLC002M", "AGLC009M", "AGLE007M", "AGLE008M", "AGLE010M", "AGLE013T", "AGLE003N", "AGLL012M", "AGLH001M"];
+    const equipesRomullo = ["AGLE036M", "AGLE002T", "AGLE003T", "AGLE006T", "AGLE037N", "AGLL008M", "AGLL010M"];
+    const todasEquipes = [...equipesDanilo, ...equipesDionatan, ...equipesFlavio, ...equipesRomullo].sort();
+
+    const usuarios = {
+        "Melo": {s:"123", p:"FLAVIO", n:"Flávio de Melo", lista: eqFlavio, eqs: equipesFlavio},
+        "Paz": {s:"123", p:"DANILO", n:"Danilo da Paz", lista: eqDanilo, eqs: equipesDanilo},
+        "Silva": {s:"123", p:"DIONATAN", n:"Dionatan Silva", lista: eqDionatan, eqs: equipesDionatan},
+        "Ubaldino": {s:"123", p:"ROMULLO", n:"Romullo Ubaldino", lista: eqRomullo, eqs: equipesRomullo},
+        "Sesmt": {s:"@sesmt", p:"SESMT", n:"SESMT", lista: listaMestre, eqs: todasEquipes},
+        "Coord": {s:"000", p:"COORD", n:"Valdivino Siqueira", lista: listaMestre, eqs: todasEquipes},
+        "Admin": {s:"admin", p:"ADM", n:"Administrador", lista: listaMestre, eqs: todasEquipes}
+    };
+
+    // --- FUNÇÕES DE SINCRONIZAÇÃO EM TEMPO REAL ---
+    const q = query(collection(db, "registros"), orderBy("timestamp", "desc"), limit(200));
+    onSnapshot(q, (snapshot) => {
+        registrosGlobais = [];
+        snapshot.forEach((doc) => {
+            registrosGlobais.push({ id_fb: doc.id, ...doc.data() });
+        });
+        // Se o modal estiver aberto, atualiza a tela automaticamente
+        if(document.getElementById('modalHistorico').style.display === "block") abrirHistorico();
+    });
+
+    // --- FUNÇÕES DO APP (EXPORTADAS PARA WINDOW) ---
+
+    window.login = function() {
+        const m = document.getElementById('mat').value;
+        const s = document.getElementById('sen').value;
+        if(usuarios[m] && usuarios[m].s === s){
+            userAtivo = usuarios[m];
+            document.getElementById('telaAcesso').style.display='none';
+            document.getElementById('appPrincipal').style.display='block';
+            document.getElementById('tituloPerfil').innerText = userAtivo.n;
+            if(userAtivo.p === 'SESMT') document.getElementById('blocoSesmt').style.display='block';
+            if(userAtivo.p === 'ADM') document.getElementById('areaAdm').style.display='block';
+            carregarSelects(userAtivo.lista, userAtivo.eqs);
+        } else alert("Dados incorretos!");
+    }
+
+    function carregarSelects(colabs, equipes) {
+        const m = document.getElementById('motorista'); 
+        const e = document.getElementById('eletricista');
+        const eqS = document.getElementById('equipeSelect');
+        m.innerHTML = e.innerHTML = '<option value="" disabled selected>Selecionar Colaborador...</option>';
+        eqS.innerHTML = '<option value="" disabled selected>Selecionar Prefixo...</option>';
+        colabs.forEach(n => { m.options[m.options.length] = new Option(n, n); e.options[e.options.length] = new Option(n, n); });
+        equipes.forEach(q => { eqS.options[eqS.options.length] = new Option(q, q); });
+    }
+
+    window.registrar = async function() {
+        const mot = document.getElementById('motorista').value;
+        const ele = document.getElementById('eletricista').value;
+        const eqp = document.getElementById('equipeSelect').value;
+        const loc = document.getElementById('localAtividade').value;
+        let tec = (userAtivo.p === 'SESMT') ? document.getElementById('tecSesmt').value : "";
+
+        if((userAtivo.p === 'SESMT' && !tec) || !mot || !ele || !eqp || !loc) {
+            return alert("⚠️ ERRO: Preencha todos os campos!");
+        }
+
+        const reg = {
+            timestamp: Date.now(),
+            data: new Date().toLocaleDateString('pt-BR'),
+            hora: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
+            local: loc, eqp, mot, ele, 
+            resp: (userAtivo.p === 'SESMT') ? tec : userAtivo.n
         };
 
-        function login() {
-            const m = document.getElementById('mat').value;
-            const s = document.getElementById('sen').value;
-            if(usuarios[m] && usuarios[m].s === s){
-                userAtivo = usuarios[m];
-                document.getElementById('telaAcesso').style.display='none';
-                document.getElementById('appPrincipal').style.display='block';
-                document.getElementById('tituloPerfil').innerText = userAtivo.n;
-                if(userAtivo.p === 'SESMT') document.getElementById('blocoSesmt').style.display='block';
-                if(userAtivo.p === 'ADM') document.getElementById('areaAdm').style.display='block';
-                carregarSelects(userAtivo.lista, userAtivo.eqs);
-            } else alert("Dados incorretos!");
+        try {
+            await addDoc(collection(db, "registros"), reg);
+            alert("✅ Registrado com sucesso na Nuvem!");
+            document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+        } catch (e) { alert("Erro ao salvar: " + e); }
+    }
+
+    window.abrirHistorico = function() {
+        const corpoG = document.getElementById('corpoGestao');
+        const corpoR = document.getElementById('corpoRegistros');
+        const corpoRes = document.getElementById('corpoResumo');
+        corpoG.innerHTML = corpoR.innerHTML = corpoRes.innerHTML = "";
+        
+        const hoje = new Date().toLocaleDateString('pt-BR');
+        let rHoje = registrosGlobais.filter(r => r.data === hoje);
+        let totalHoje = rHoje.length;
+
+        const resps = ["Danilo da Paz", "Dionatan Silva", "Flávio de Melo", "Romullo Ubaldino", "Valdivino Siqueira", "GLEIDSON", "JEOVÁ"];
+        resps.forEach(nome => {
+            let qtd = rHoje.filter(r => r.resp.toUpperCase() === nome.toUpperCase()).length;
+            let perc = totalHoje > 0 ? Math.round((qtd / totalHoje) * 100) : 0;
+            corpoRes.innerHTML += `<div class="card-individual"><span class="nome-res">${nome.split(' ')[0]}</span><span class="qtd-res">${qtd}</span><span class="perc-res">${perc}%</span></div>`;
+        });
+
+        let rFiltrado = (['COORD','SESMT','ADM'].includes(userAtivo.p)) ? rHoje : rHoje.filter(r => userAtivo.lista.includes(r.mot) || userAtivo.lista.includes(r.ele));
+        let nomesFeitosGlobal = rHoje.flatMap(r => [r.mot, r.ele]);
+
+        if(rFiltrado.length === 0) corpoR.innerHTML = "<p style='text-align:center; color:#999;'>Nenhum registro hoje.</p>";
+        rFiltrado.forEach(r => {
+            let btnDel = (userAtivo.p === 'ADM') ? `<button class="btn-del" onclick="apagarUm('${r.id_fb}')">Apagar</button>` : '';
+            corpoR.innerHTML += `<div class="registro-card">${btnDel}<small>📍 [${r.local}] | ⏰ ${r.hora} | ${r.resp}</small><br><strong>EQUIPE: ${r.eqp}</strong><br>🚗 Motorista: ${r.mot}<br>⚡ Eletricista: ${r.ele}</div>`;
+        });
+
+        const sups = [{nome: "Flávio de Melo", lista: eqFlavio, id: "FLAVIO"}, {nome: "Danilo da Paz", lista: eqDanilo, id: "DANILO"}, {nome: "Dionatan da Silva", lista: eqDionatan, id: "DIONATAN"}, {nome: "Romullo Ubaldino", lista: eqRomullo, id: "ROMULLO"}];
+        const paraMostrar = (['COORD','SESMT','ADM'].includes(userAtivo.p)) ? sups : sups.filter(s => s.id === userAtivo.p);
+
+        paraMostrar.forEach(sup => {
+            let pends = sup.lista.filter(n => !nomesFeitosGlobal.includes(n));
+            let realizados = sup.lista.length - pends.length;
+            let perc = Math.round((realizados / sup.lista.length) * 100);
+            let html = `<div class="grupo-supervisor"><div class="header-sup"><span>${sup.nome}</span><span>${realizados}/${sup.lista.length} (${perc}%)</span></div><div class="porcentagem-barra"><div class="porcentagem-fill" style="width:${perc}%"></div></div><div style="margin-top:8px; font-weight:bold; font-size:10px; color:#e74c3c">FALTAM:</div>`;
+            if(pends.length === 0) html += "<div style='color:green; font-size:11px; font-weight:bold;'>✅ Meta Batida!</div>";
+            else pends.forEach(p => html += `<div class="linha-pendente">• ${p}</div>`);
+            corpoG.innerHTML += html + `</div>`;
+        });
+        document.getElementById('modalHistorico').style.display = "block";
+    }
+
+    window.fecharHistorico = () => document.getElementById('modalHistorico').style.display = "none";
+
+    window.apagarUm = async function(id) {
+        if(confirm("Apagar registro permanentemente da nuvem?")) {
+            await deleteDoc(doc(db, "registros", id));
         }
+    }
 
-        function carregarSelects(colabs, equipes) {
-            const m = document.getElementById('motorista'); const e = document.getElementById('eletricista');
-            const eqS = document.getElementById('equipeSelect');
-            m.innerHTML = e.innerHTML = '<option value="" disabled selected>Selecionar Colaborador...</option>';
-            eqS.innerHTML = '<option value="" disabled selected>Selecionar Prefixo...</option>';
-            colabs.forEach(n => { m.options[m.options.length] = new Option(n, n); e.options[e.options.length] = new Option(n, n); });
-            equipes.forEach(q => { eqS.options[eqS.options.length] = new Option(q, q); });
-        }
+    // Nota: O limparTudo precisaria de um loop de deleteDoc. Recomendo usar o apagar individual por segurança.
+    window.limparTudo = () => alert("Função desabilitada por segurança na nuvem. Apague registros individuais.");
 
-        function registrar() {
-            const mot = document.getElementById('motorista').value;
-            const ele = document.getElementById('eletricista').value;
-            const eqp = document.getElementById('equipeSelect').value;
-            const loc = document.getElementById('localAtividade').value;
-            let tec = "";
-
-            if(userAtivo.p === 'SESMT') {
-                tec = document.getElementById('tecSesmt').value;
-                if(!tec) return alert("⚠️ Selecione o Técnico do SESMT!");
-            }
-
-            if(!mot || mot === "" || !ele || ele === "" || !eqp || eqp === "" || !loc || loc === "") {
-                return alert("⚠️ ERRO: Todos os campos devem ser preenchidos!");
-            }
-
-            const reg = {
-                id: Date.now(),
-                data: new Date().toLocaleDateString('pt-BR'),
-                hora: new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
-                local: loc,
-                eqp: eqp, mot, ele, 
-                resp: (userAtivo.p === 'SESMT') ? tec : userAtivo.n
-            };
-
-            let h = JSON.parse(localStorage.getItem('stc_v10')) || [];
-            h.push(reg);
-            localStorage.setItem('stc_v10', JSON.stringify(h));
-            
-            alert("✅ Taxa registrada com sucesso!");
-            
-            document.getElementById('motorista').selectedIndex = 0;
-            document.getElementById('eletricista').selectedIndex = 0;
-            document.getElementById('equipeSelect').selectedIndex = 0;
-            document.getElementById('localAtividade').selectedIndex = 0;
-        }
-
-        function abrirHistorico() {
-            const corpoG = document.getElementById('corpoGestao');
-            const corpoR = document.getElementById('corpoRegistros');
-            const corpoRes = document.getElementById('corpoResumo');
-            corpoG.innerHTML = ""; corpoR.innerHTML = ""; corpoRes.innerHTML = "";
-            
-            const hoje = new Date().toLocaleDateString('pt-BR');
-            let h = JSON.parse(localStorage.getItem('stc_v10')) || [];
-            let rHoje = h.filter(r => r.data === hoje);
-            let totalHoje = rHoje.length;
-
-            const resps = ["Danilo da Paz", "Dionatan Silva", "Flávio de Melo", "Romullo Ubaldino", "Valdivino Siqueira", "GLEIDSON", "JEOVÁ"];
-            resps.forEach(nome => {
-                let qtd = rHoje.filter(r => r.resp.toUpperCase() === nome.toUpperCase()).length;
-                let perc = totalHoje > 0 ? Math.round((qtd / totalHoje) * 100) : 0;
-                
-                corpoRes.innerHTML += `
-                    <div class="card-individual">
-                        <span class="nome-res">${nome.split(' ')[0]}</span>
-                        <span class="qtd-res">${qtd}</span>
-                        <span class="perc-res">${perc}%</span>
-                    </div>`;
-            });
-
-            let rFiltrado = (['COORD','SESMT','ADM'].includes(userAtivo.p)) 
-                ? rHoje : rHoje.filter(r => userAtivo.lista.includes(r.mot) || userAtivo.lista.includes(r.ele));
-
-            let nomesFeitosGlobal = rHoje.flatMap(r => [r.mot, r.ele]);
-
-            if(rFiltrado.length === 0) corpoR.innerHTML = "<p style='text-align:center; color:#999;'>Nenhum registro hoje.</p>";
-            rFiltrado.slice().reverse().forEach(r => {
-                let btnDel = (userAtivo.p === 'ADM') ? `<button class="btn-del" onclick="apagarUm(${r.id})">Apagar</button>` : '';
-                corpoR.innerHTML += `
-                    <div class="registro-card">
-                        ${btnDel}
-                        <small>📍 [${r.local}] | ⏰ ${r.hora} | ${r.resp}</small><br>
-                        <strong>EQUIPE: ${r.eqp}</strong> <br>
-                        🚗 Motorista: ${r.mot}<br> 
-                        ⚡ Eletricista: ${r.ele}
-                    </div>`;
-            });
-
-            const sups = [
-                {nome: "Flávio de Melo", lista: eqFlavio, id: "FLAVIO"},
-                {nome: "Danilo da Paz", lista: eqDanilo, id: "DANILO"},
-                {nome: "Dionatan da Silva", lista: eqDionatan, id: "DIONATAN"},
-                {nome: "Romullo Ubaldino", lista: eqRomullo, id: "ROMULLO"}
-            ];
-
-            const paraMostrar = (['COORD','SESMT','ADM'].includes(userAtivo.p)) ? sups : sups.filter(s => s.id === userAtivo.p);
-
-            paraMostrar.forEach(sup => {
-                let pends = sup.lista.filter(n => !nomesFeitosGlobal.includes(n));
-                let total = sup.lista.length;
-                let realizados = total - pends.length;
-                let perc = total > 0 ? Math.round((realizados / total) * 100) : 0;
-
-                let html = `
-                    <div class="grupo-supervisor">
-                        <div class="header-sup">
-                            <span>${sup.nome}</span> 
-                            <span>${realizados}/${total} (${perc}%)</span>
-                        </div>
-                        <div class="porcentagem-barra">
-                            <div class="porcentagem-fill" style="width:${perc}%"></div>
-                        </div>
-                        <div style="margin-top:8px; font-weight:bold; font-size:10px; color:#e74c3c">FALTAM:</div>
-                `;
-                
-                if(pends.length === 0) {
-                    html += "<div style='color:green; font-size:11px; font-weight:bold;'>✅ Meta Batida!</div>";
-                } else {
-                    pends.forEach(p => html += `<div class="linha-pendente">• ${p}</div>`);
-                }
-                
-                html += `</div>`;
-                corpoG.innerHTML += html;
-            });
-            document.getElementById('modalHistorico').style.display = "block";
-        }
-
-        function fecharHistorico() { document.getElementById('modalHistorico').style.display = "none"; }
-
-        function apagarUm(id) {
-            if(confirm("Apagar registro?")) {
-                let h = JSON.parse(localStorage.getItem('stc_v10')) || [];
-                h = h.filter(r => r.id !== id);
-                localStorage.setItem('stc_v10', JSON.stringify(h));
-                abrirHistorico();
-            }
-        }
-
-        function limparTudo() {
-            if(confirm("⚠️ LIMPAR TUDO?")) {
-                localStorage.removeItem('stc_v10');
-                abrirHistorico();
-            }
-        }
-    </script>
+</script>
+   
 </body>
 </html>
