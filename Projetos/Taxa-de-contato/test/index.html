@@ -123,20 +123,22 @@
     </div>
 
    <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    // Importando as bibliotecas do Firebase (versão estável 10.10.0)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
-    // 1. CONFIGURAÇÃO DO FIREBASE (SUBSTITUA PELOS SEUS DADOS DO CONSOLE)
+    // 1. CONFIGURAÇÃO ATUALIZADA COM SUAS CHAVES DO CONSOLE
     const firebaseConfig = {
-        apiKey: "SUA_API_KEY",
-        authDomain: "SEU_PROJETO.firebaseapp.com",
-        projectId: "SEU_PROJETO",
-        storageBucket: "SEU_PROJETO.appspot.com",
-        messagingSenderId: "SEU_ID",
-        appId: "SEU_APP_ID"
+        apiKey: "AIzaSyAjgbaEPQrTOhSByOcwNpE3Y569FbA06Aw",
+        authDomain: "stc-digital-b0521.firebaseapp.com",
+        projectId: "stc-digital-b0521",
+        storageBucket: "stc-digital-b0521.firebasestorage.app",
+        messagingSenderId: "141817904082",
+        appId: "1:141817904082:web:47ff34df25b2b7fc09660b",
+        measurementId: "G-EP52VE0FZ8"
     };
 
-    // Inicialização
+    // Inicialização do Firebase
     const firebaseApp = initializeApp(firebaseConfig);
     const db = getFirestore(firebaseApp);
 
@@ -174,12 +176,10 @@
         snapshot.forEach((doc) => {
             registrosGlobais.push({ id_fb: doc.id, ...doc.data() });
         });
-        // Se o modal estiver aberto, atualiza a tela automaticamente
         if(document.getElementById('modalHistorico').style.display === "block") abrirHistorico();
     });
 
-    // --- FUNÇÕES DO APP (EXPORTADAS PARA WINDOW) ---
-
+    // --- FUNÇÕES DO APP ---
     window.login = function() {
         const m = document.getElementById('mat').value;
         const s = document.getElementById('sen').value;
@@ -227,7 +227,10 @@
             await addDoc(collection(db, "registros"), reg);
             alert("✅ Registrado com sucesso na Nuvem!");
             document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
-        } catch (e) { alert("Erro ao salvar: " + e); }
+        } catch (e) { 
+            console.error(e);
+            alert("Erro ao salvar: Verifique se as Regras do Firestore foram publicadas!"); 
+        }
     }
 
     window.abrirHistorico = function() {
@@ -279,9 +282,7 @@
         }
     }
 
-    // Nota: O limparTudo precisaria de um loop de deleteDoc. Recomendo usar o apagar individual por segurança.
     window.limparTudo = () => alert("Função desabilitada por segurança na nuvem. Apague registros individuais.");
-
 </script>
    
 </body>
