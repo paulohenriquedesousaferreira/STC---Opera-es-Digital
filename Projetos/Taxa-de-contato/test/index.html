@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>STC Digital - Inspeção</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="ICONE.png" type="image/png">
+
+
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 15px; margin: 0; min-height: 100vh; }
         
@@ -153,10 +157,10 @@
     const eqRomullo = ["AILTON FREITAS DE AMORIM", "AMARILDO DE JESUS GONÇALVES", "ANTONIO DE PADUA LOPES ROMANO", "DALMI P. DOS SANTOS", "DONIZETE BELTRÃO DOS SANTOS", "EDIMILSON RIBEIRO DA SILVA", "EDUARDO XAVIER DE ARAUJO", "ELIEZ ALVES MADUREIRA", "ERASMO PEREIRA ALVES", "JANES DE ARAUJO CARDOSO", "JOSE LINALDO BARBOSA DE SOUZA", "KAIO DA COSTA E SOUZA", "LINDOMAR ROCHA PEREIRA", "LUCINEI RODRIGUES FIGUEIREDO", "LUIZ RODRIGUES LEAL", "RAFAEL DA ROCHA SANTOS", "REGIS PEREIRA XAVIER", "RENATO DA SILVA RODRIGUES", "TIAGO BRAZ DE OLIVEIRA", "WALDE ADRIANO ALVES DE SOUSA"].sort();
     
     const listaMestre = [...eqFlavio, ...eqDanilo, ...eqDionatan, ...eqRomullo].sort();
-    const equipesDanilo = ["AGLC003M", "AGLC008M", "AGLE002M", "AGLE006M", "AGLE011M", "AGLE013M", "AGLL001M", "AGLL005M", "AGLL007M", "AGLH002M"];
-    const equipesDionatan = ["AGLE007T", "AGLE008T", "AGLE010T", "AGLE014T", "AGLE033T", "AGLE035T", "AGLE005N", "AGLL003M", "AGLL004M", "AGLL009M"];
-    const equipesFlavio = ["AGLC001M", "AGLC002M", "AGLC009M", "AGLE007M", "AGLE008M", "AGLE010M", "AGLE013T", "AGLE003N", "AGLL012M", "AGLH001M"];
-    const equipesRomullo = ["AGLE036M", "AGLE002T", "AGLE003T", "AGLE006T", "AGLE037N", "AGLL008M", "AGLL010M"];
+    const equipesDanilo = ["AGLC003M", "AGLC008M", "AGLE002M", "AGLE006M", "AGLE002T", "AGLL001M", "AGLL005M", "AGLL007M", "AGLH002M"];
+    const equipesDionatan = ["AGLE010M", "AGLE036M", "AGLE013T", "AGLE011M", "AGLE006T",, "AGLE010T", "AGLE014T", "AGLE033T", "AGLL003M", "AGLL004M", "AGLL009M"];
+    const equipesFlavio = ["AGLC001M", "AGLC002M", "AGLC009M", "AGLE013M", "AGLE003T", "AGLE035T", "AGLE003N", "AGLL012M", "AGLE005N","AGLH001M"];
+    const equipesRomullo = ["AGLE007M", "AGLE008M", "AGLE007T", "AGLE008T", "AGLE037N", "AGLL008M", "AGLL010M"];
     const todasEquipes = [...equipesDanilo, ...equipesDionatan, ...equipesFlavio, ...equipesRomullo].sort();
 
     const usuarios = {
