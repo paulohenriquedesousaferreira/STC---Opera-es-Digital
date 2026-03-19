@@ -20,10 +20,14 @@
         /* APP PRINCIPAL */
         #appPrincipal { display: none; width: 100%; max-width: 500px; padding-bottom: 40px; }
         .equipe-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; margin-bottom: 20px; }
-        .secao-titulo { font-size: 11px; color: #95a5a6; font-weight: bold; text-transform: uppercase; margin: 15px 0 5px 0; }
-        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 15px; background-color: #fff; margin-bottom: 5px; }
+        .secao-titulo { font-size: 11px; color: #95a5a6; font-weight: bold; text-transform: uppercase; margin: 15px 0 5px 0; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* INPUTS E SELECTS */
+        select, input.busca-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 15px; background-color: #fff; margin-bottom: 5px; box-sizing: border-box; }
+        
         .colaborador-linha { background: #f8f9fa; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #ddd; }
-        .cargo-label { display: inline-block; padding: 3px 10px; border-radius: 4px; color: white; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
+        .cargo-label-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .cargo-label { display: inline-block; padding: 3px 10px; border-radius: 4px; color: white; font-size: 11px; font-weight: bold; }
         .motorista-cor { background: #34495e; }
         .eletricista-cor { background: #f39c12; }
 
@@ -31,6 +35,8 @@
         .btn-registrar-geral { width: 100%; padding: 18px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .btn-historico-card { width: 100%; padding: 15px; background: #34495e; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .btn-sair-rodape { width: 100%; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        
+        .check-outro { font-size: 9px; color: #7f8c8d; display: flex; align-items: center; gap: 3px; cursor: pointer; text-transform: none; }
 
         /* MODAL E HISTÓRICO */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; }
@@ -41,13 +47,14 @@
 
         /* CAIXINHAS RESUMO */
         .container-resumo { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 0; justify-content: center; }
-        .card-individual { width: calc(33% - 8px); min-width: 85px; background: #2c3e50; color: white; padding: 8px 4px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .card-individual { width: calc(33% - 8px); min-width: 85px; background: #2c3e50; color: white; padding: 8px 4px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.1s; }
+        .card-individual:active { transform: scale(0.95); background: #34495e; }
         .card-individual .nome-res { font-size: 9px; text-transform: uppercase; opacity: 0.8; display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-individual .qtd-res { font-size: 16px; font-weight: bold; display: block; line-height: 1; }
         .card-individual .perc-res { font-size: 9px; background: rgba(255,255,255,0.15); padding: 1px 4px; border-radius: 5px; display: inline-block; margin-top: 4px; }
 
         /* PENDÊNCIAS */
-        .grupo-supervisor { background: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; padding: 12px; margin-bottom: 15px; }
+        .grupo-supervisor { background: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; padding: 12px; margin-bottom: 15px; scroll-margin-top: 40px; }
         .header-sup { display: flex; justify-content: space-between; font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 8px; font-size: 14px; }
         .porcentagem-barra { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; margin: 5px 0; }
         .porcentagem-fill { background: #2ecc71; height: 100%; transition: width 0.5s ease; }
@@ -84,17 +91,30 @@
                 <option value="SAD">SAD</option>
                 <option value="PB">PB</option>
             </select>
-
-            <div class="secao-titulo">Prefixo Equipe</div>
-            <select id="equipeSelect"></select>
-
-            <div class="colaborador-linha">
-                <div class="cargo-label motorista-cor">Motorista</div>
-                <select id="motorista"></select>
+         
+            <div class="secao-titulo">
+                Prefixo Equipe
+                <label class="check-outro"><input type="checkbox" id="chkEq" onchange="alternarListaPrefixos(this)"> Outro Sup.</label>
             </div>
+            <input type="text" id="equipeSelect" class="busca-input" list="listaPrefixos" placeholder="Pesquisar Prefixo...">
+            <datalist id="listaPrefixos"></datalist>
+
             <div class="colaborador-linha">
-                <div class="cargo-label eletricista-cor">Eletricista</div>
-                <select id="eletricista"></select>
+                <div class="cargo-label-container">
+                    <div class="cargo-label motorista-cor">Motorista</div>
+                    <label class="check-outro"><input type="checkbox" id="chkMot" onchange="alternarListaIndividual('motorista', this)"> Outro Sup.</label>
+                </div>
+                <input type="text" id="motorista" class="busca-input" list="listaMotoristas" placeholder="Pesquisar Motorista...">
+                <datalist id="listaMotoristas"></datalist>
+            </div>
+
+            <div class="colaborador-linha">
+                <div class="cargo-label-container">
+                    <div class="cargo-label eletricista-cor">Eletricista</div>
+                    <label class="check-outro"><input type="checkbox" id="chkEle" onchange="alternarListaIndividual('eletricista', this)"> Outro Sup.</label>
+                </div>
+                <input type="text" id="eletricista" class="busca-input" list="listaEletricistas" placeholder="Pesquisar Eletricista...">
+                <datalist id="listaEletricistas"></datalist>
             </div>
 
             <button class="btn-registrar-geral" onclick="registrar()">Registrar Taxa</button>
@@ -102,16 +122,15 @@
         </div>
 
         <button class="btn-sair-rodape" onclick="location.reload()">Sair</button>
-        <p style="text-align: center; font-size: 10px; color: #bdc3c7; margin-top: 15px;">STC Digital v1.3</p>
+        <p style="text-align: center; font-size: 10px; color: #bdc3c7; margin-top: 15px;">STC Digital v1.7</p>
     </div>
 
     <div id="modalHistorico" class="modal">
         <div class="modal-content">
             <div class="close-btn" onclick="fecharHistorico()">VOLTAR</div>
-            
             <h2 style="margin-top: 35px; color: #2c3e50; font-size: 16px;">Taxas por Responsável</h2>
             <div id="corpoResumo" class="container-resumo"></div>
-
+            
             <h2 style="color: #2c3e50; font-size: 16px; margin-top: 15px;">Histórico Realizados</h2>
             <div id="corpoRegistros"></div>
             
@@ -125,7 +144,7 @@
         </div>
     </div>
 
-   <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
@@ -147,7 +166,7 @@
 
     const eqFlavio = ["ALDAIR FERREIRA DOS SANTOS", "CARLOS DANIEL DE M SILVA", "DAHLIN ALVES DE OLIVEIRA", "DENISVALDO VERAS DOS SANTOS", "DIEGO DIEFLEI ARAÚJO DA COSTA", "DNILSON CORNELIO OLIVEIRA", "ELISSANDRO BORGES BRITO", "FERNANDO SOARES DA SILVA", "FRANCISCO DE ASSIS DE OLIVEIRA", "FRANCISCO DE ASSIS FELIX DA CONCEIÇÃO", "FRANCISCO MOACIR G O NETO", "FRANCISCO ROGERIO DE ARAUJO", "GELSON GOMES DE SOUSA", "GUILHEME GONÇALVES DOS SANTOS", "HEGON RODRIGUES LIMA", "ISRAEL FERREIRA DE SOUSA RODRIGUES", "JOÃO FERREIRA DE ANDRADE NETO", "JOSÉ ADÃO ANTUNES MENDES", "JOSE KLEBER ANDRA DE CABRAL", "LEANDRO SANTOS DE FARIAS", "LEONARDO PEIXOTO DIAS", "LUCAS LOPES DA SILVA FERREIRA", "MARCOS ANTONIO SILVA", "MARCUS COUTINHO LUCENA", "MARUILO ALVES RODRIGUES", "RAFAEL DA SILVA", "RAIMUNDO DINIZ DA SILVA", "ROBSON BRANDÃO SOARES", "WELISON PEDRO PATRICIO DA SILVA"].sort();
     const eqDanilo = ["ADÃO MANUEL DE ARAUJO", "ANDERSON VERAS MOREIRAS", "CELIO SILVA DE JESUS", "CLECIO ALVES DOS SANTOS", "DEONE BERNARDES DOS SANTOS", "DEUZIMAR ALVES DA COSTA", "EDCARLOS DE JESUS CARNEIRO", "ELITON JOSÉ RIBEIRO", "FRANCISCO SILVA RODRIGUES", "GABRIEL LEANDRO MATIAS", "GUILHERME AZEVEDO DE ARAUJO", "HELIO PEREIRA DOS SANTOS", "JONATHA MARTINS DE FREITAS", "JONES PASSOS DA CUNHA", "JOSMAR CELESTIANO DA SILVA JUNIOR", "LEONARDO RODRIGUES PEREIRA LIMA", "LUCAS GABRIEL TORRES DA SILVA", "LUIZ FILIPE TELES CARVALHO", "MANOEL MARTINS DA SILVA", "ODELIO GUEDES DE JESUS", "PAULO CESAR DA SILVA", "PAULO HENRIQUE DE SOUSA FERREIRA C", "PAULO RIBEIRO DO NASCIMENTO", "RAIMUNDO RODRIGUES DOS SANTOS", "SILAS LIOMAR SILVA DE LIMA", "SUMAISSON DA SILVA ALMEIDA", "TIAGO SANTOS ARAUJO", "VALDECI VALENTIM DE SOUSA", "WEULISMAR FERREIRA DOS SANTOS FELIX"].sort();
-    const eqDionatan = ["ADERLAN MELO DE SOUZA", "ALEXANDRE DE SOUZA SILVA", "ANTONIO RAISSON ALVES PINHEIRO", "CLAUDIO PERREIRA DE SÁ", "CRISTIANO FERREIRA DE ARRUDA", "DIONIZIO PAULINO DA FONSECA", "DOUGLAS NASCIMENTO SOARES", "EDSON JOSE DA SILVA JUNIOR", "FABIO RUBENS ALENCAR DOS SANTOS", "FLAVIO DE MELO RIBEIRO", "GUSTAVO ALVES DE SOUSA ARAGÃO", "IVANILSON DA SILVA LOPES", "IVONILDO MOURA FIHO", "JEAN RODRIGUES DA SILVA", "JOÃO LUIZ PAULINO DA FONSECA", "JOÃO PAULO ROCHA DE LIMA", "JOEL ALVES LIMA", "JOSE DE RIBAMAR DA SILVA NEVES", "JOSE LUIZ ARAGÃO JUNIOR", "JOSE MARCOS BONFIM DE ARAUJO", "JOSE ROMARIO ROCHA DE SOUZA", "LUAN AUGUSTO FRANÇA CONCEIÇÃO", "MARCELO ALVES DA SILVA", "MARCELO AMADO DA SILVA", "RAYDSON PEREIRA ALENCAR", "ROGERIO MARQUER DA SILVA", "RONALDO SENA MARQUES", "RUBEM SOARES PINTO", "SAMUEL ALVES LIMA", "SAMUEL CLESLEY ALVES MIRANDA", "SEBASTIÃO PEREIRA DA SILVA", "TIAGO MENDES LIMA", "VALDIMAR SOUZA ALVES", "WARLEY SATELES DOS SANTOS"].sort();
+    const eqDionatan = ["ADERLAN MELO DE SOUZA", "ALEXANDRE DE SOUZA SILVA", "ANTONIO RAISSON ALVES PINHEIRO", "CLAUDIO PERREIRA DE SÁ", "CRISTIANO FERREIRA DE ARRUDA", "DOUGLAS NASCIMENTO SOARES", "EDSON JOSE DA SILVA JUNIOR", "FABIO RUBENS ALENCAR DOS SANTOS", "GUSTAVO ALVES DE SOUSA ARAGÃO", "IVANILSON DA SILVA LOPES", "IVONILDO MOURA FIHO", "JEAN RODRIGUES DA SILVA", "JOÃO LUIZ PAULINO DA FONSECA", "JOÃO PAULO ROCHA DE LIMA", "JOEL ALVES LIMA", "JOSE DE RIBAMAR DA SILVA NEVES", "JOSE LUIZ ARAGÃO JUNIOR", "JOSE MARCOS BONFIM DE ARAUJO", "JOSE ROMARIO ROCHA DE SOUZA", "LUAN AUGUSTO FRANÇA CONCEIÇÃO", "MARCELO ALVES DA SILVA", "MARCELO AMADO DA SILVA", "RAYDSON PEREIRA ALENCAR", "ROGERIO MARQUER DA SILVA", "RONALDO SENA MARQUES", "RUBEM SOARES PINTO", "SAMUEL ALVES LIMA", "SAMUEL CLESLEY ALVES MIRANDA", "SEBASTIÃO PEREIRA DA SILVA", "TIAGO MENDES LIMA", "VALDIMAR SOUZA ALVES", "WARLEY SATELES DOS SANTOS"].sort();
     const eqRomullo = ["AILTON FREITAS DE AMORIM", "AMARILDO DE JESUS GONÇALVES", "ANTONIO DE PADUA LOPES ROMANO", "DALMI P. DOS SANTOS", "DONIZETE BELTRÃO DOS SANTOS", "EDIMILSON RIBEIRO DA SILVA", "EDUARDO XAVIER DE ARAUJO", "ELIEZ ALVES MADUREIRA", "ERASMO PEREIRA ALVES", "JANES DE ARAUJO CARDOSO", "JOSE LINALDO BARBOSA DE SOUZA", "KAIO DA COSTA E SOUZA", "LINDOMAR ROCHA PEREIRA", "LUCINEI RODRIGUES FIGUEIREDO", "LUIZ RODRIGUES LEAL", "RAFAEL DA ROCHA SANTOS", "REGIS PEREIRA XAVIER", "RENATO DA SILVA RODRIGUES", "TIAGO BRAZ DE OLIVEIRA", "WALDE ADRIANO ALVES DE SOUSA"].sort();
     
     const listaMestre = [...eqFlavio, ...eqDanilo, ...eqDionatan, ...eqRomullo].sort();
@@ -167,13 +186,10 @@
         "Admin": {s:"admin", p:"ADM", n:"Administrador", lista: listaMestre, eqs: todasEquipes}
     };
 
-    // AUMENTADO O LIMITE PARA 1000 PARA PEGAR O MÊS TODO
     const q = query(collection(db, "registros"), orderBy("timestamp", "desc"), limit(1000));
     onSnapshot(q, (snapshot) => {
         registrosGlobais = [];
-        snapshot.forEach((doc) => {
-            registrosGlobais.push({ id_fb: doc.id, ...doc.data() });
-        });
+        snapshot.forEach((doc) => { registrosGlobais.push({ id_fb: doc.id, ...doc.data() }); });
         if(document.getElementById('modalHistorico').style.display === "block") abrirHistorico();
     });
 
@@ -191,14 +207,29 @@
         } else alert("Dados incorretos!");
     }
 
+    function atualizarDatalist(idList, dados) {
+        const list = document.getElementById(idList);
+        list.innerHTML = "";
+        dados.forEach(item => { const opt = document.createElement('option'); opt.value = item; list.appendChild(opt); });
+    }
+
+    window.alternarListaPrefixos = function(chk) {
+        const dados = chk.checked ? todasEquipes : userAtivo.eqs;
+        atualizarDatalist('listaPrefixos', dados);
+        document.getElementById('equipeSelect').value = "";
+    }
+
+    window.alternarListaIndividual = function(tipo, chk) {
+        const listId = tipo === 'motorista' ? 'listaMotoristas' : 'listaEletricistas';
+        const dados = chk.checked ? listaMestre : userAtivo.lista;
+        atualizarDatalist(listId, dados);
+        document.getElementById(tipo).value = "";
+    }
+
     function carregarSelects(colabs, equipes) {
-        const m = document.getElementById('motorista'); 
-        const e = document.getElementById('eletricista');
-        const eqS = document.getElementById('equipeSelect');
-        m.innerHTML = e.innerHTML = '<option value="" disabled selected>Selecionar Colaborador...</option>';
-        eqS.innerHTML = '<option value="" disabled selected>Selecionar Prefixo...</option>';
-        colabs.forEach(n => { m.options[m.options.length] = new Option(n, n); e.options[e.options.length] = new Option(n, n); });
-        equipes.forEach(q => { eqS.options[eqS.options.length] = new Option(q, q); });
+        atualizarDatalist('listaMotoristas', colabs);
+        atualizarDatalist('listaEletricistas', colabs);
+        atualizarDatalist('listaPrefixos', equipes);
     }
 
     window.registrar = async function() {
@@ -208,9 +239,7 @@
         const loc = document.getElementById('localAtividade').value;
         let tec = (userAtivo.p === 'SESMT') ? document.getElementById('tecSesmt').value : "";
 
-        if((userAtivo.p === 'SESMT' && !tec) || !mot || !ele || !eqp || !loc) {
-            return alert("⚠️ ERRO: Preencha todos os campos!");
-        }
+        if((userAtivo.p === 'SESMT' && !tec) || !mot || !ele || !eqp || !loc) { return alert("⚠️ ERRO: Preencha todos os campos!"); }
 
         const reg = {
             timestamp: Date.now(),
@@ -222,27 +251,22 @@
 
         try {
             await addDoc(collection(db, "registros"), reg);
-            alert("✅ Registrado com sucesso na Nuvem!");
-            document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
-        } catch (e) { 
-            console.error(e);
-            alert("Erro ao salvar!"); 
-        }
+            alert("✅ Registrado com sucesso!");
+            document.getElementById('motorista').value = document.getElementById('eletricista').value = document.getElementById('equipeSelect').value = "";
+            document.getElementById('localAtividade').selectedIndex = 0;
+        } catch (e) { alert("Erro ao salvar!"); }
     }
 
-    // --- FUNÇÃO ALTERADA PARA FILTRAR O MÊS INTEIRO ---
     window.abrirHistorico = function() {
         const corpoG = document.getElementById('corpoGestao');
         const corpoR = document.getElementById('corpoRegistros');
         const corpoRes = document.getElementById('corpoResumo');
         corpoG.innerHTML = corpoR.innerHTML = corpoRes.innerHTML = "";
         
-        // Pega Mês e Ano atuais
         const agora = new Date();
-        const mesAtual = agora.getMonth(); // 0 a 11
+        const mesAtual = agora.getMonth();
         const anoAtual = agora.getFullYear();
 
-        // Filtra registros que são do mês e ano atuais
         let rMes = registrosGlobais.filter(r => {
             const partes = r.data.split('/');
             const dataReg = new Date(partes[2], partes[1] - 1, partes[0]);
@@ -250,53 +274,54 @@
         });
 
         let totalMes = rMes.length;
-
         const resps = ["Danilo da Paz", "Dionatan Silva", "Flávio de Melo", "Romullo Ubaldino", "Valdivino Siqueira", "GLEIDSON", "JEOVÁ"];
+        
+        // 1. CARDS DE RESUMO NO TOPO
         resps.forEach(nome => {
-            let qtd = rMes.filter(r => r.resp.toUpperCase() === nome.toUpperCase()).length;
+            let qtd = rMes.filter(r => r.resp.toUpperCase().includes(nome.toUpperCase())).length;
             let perc = totalMes > 0 ? Math.round((qtd / totalMes) * 100) : 0;
-            corpoRes.innerHTML += `<div class="card-individual"><span class="nome-res">${nome.split(' ')[0]}</span><span class="qtd-res">${qtd}</span><span class="perc-res">${perc}%</span></div>`;
+            let idLink = "sup_" + nome.split(' ')[0];
+            corpoRes.innerHTML += `<div class="card-individual" onclick="document.getElementById('${idLink}').scrollIntoView({behavior:'smooth'})">
+                <span class="nome-res">${nome.split(' ')[0]}</span>
+                <span class="qtd-res">${qtd}</span>
+                <span class="perc-res">${perc}%</span>
+            </div>`;
         });
 
+        // 2. HISTÓRICO REALIZADOS
         let rFiltrado = (['COORD','SESMT','ADM'].includes(userAtivo.p)) ? rMes : rMes.filter(r => userAtivo.lista.includes(r.mot) || userAtivo.lista.includes(r.ele));
-        let nomesFeitosGlobal = rMes.flatMap(r => [r.mot, r.ele]);
-
-        if(rFiltrado.length === 0) corpoR.innerHTML = "<p style='text-align:center; color:#999;'>Nenhum registro este mês.</p>";
         rFiltrado.forEach(r => {
             let btnDel = (userAtivo.p === 'ADM') ? `<button class="btn-del" onclick="apagarUm('${r.id_fb}')">Apagar</button>` : '';
-            corpoR.innerHTML += `<div class="registro-card">${btnDel}<small>${r.data} | ⏰ ${r.hora} | ${r.resp}</small><br><strong>EQUIPE: ${r.eqp}</strong><br>🚗 Motorista: ${r.mot}<br>⚡ Eletricista: ${r.ele}</div>`;
+        corpoR.innerHTML += `<div class="registro-card">${btnDel}<small>${r.data} | ⏰ ${r.hora} | ${r.resp}</small><br><strong>EQUIPE: ${r.eqp}</strong><br>🚗 Motorista: ${r.mot}<br>⚡ Eletricista: ${r.ele}</div>`; 
         });
 
-        const sups = [{nome: "Flávio de Melo", lista: eqFlavio, id: "FLAVIO"}, {nome: "Danilo da Paz", lista: eqDanilo, id: "DANILO"}, {nome: "Dionatan da Silva", lista: eqDionatan, id: "DIONATAN"}, {nome: "Romullo Ubaldino", lista: eqRomullo, id: "ROMULLO"}];
-        const paraMostrar = (['COORD','SESMT','ADM'].includes(userAtivo.p)) ? sups : sups.filter(s => s.id === userAtivo.p);
+        // 3. RELATÓRIO DE PENDÊNCIAS (IGUAL PARA TODOS OS PERFIS AGORA)
+        const nomesFeitosGlobal = rMes.flatMap(r => [r.mot, r.ele]);
+        const sups = [
+            {nome: "Flávio de Melo", lista: eqFlavio}, 
+            {nome: "Danilo da Paz", lista: eqDanilo}, 
+            {nome: "Dionatan Silva", lista: eqDionatan}, 
+            {nome: "Romullo Ubaldino", lista: eqRomullo}
+        ];
 
-        paraMostrar.forEach(sup => {
+        sups.forEach(sup => {
             let pends = sup.lista.filter(n => !nomesFeitosGlobal.includes(n));
             let realizados = sup.lista.length - pends.length;
             let perc = Math.round((realizados / sup.lista.length) * 100);
-            let html = `<div class="grupo-supervisor"><div class="header-sup"><span>${sup.nome}</span><span>${realizados}/${sup.lista.length} (${perc}%)</span></div><div class="porcentagem-barra"><div class="porcentagem-fill" style="width:${perc}%"></div></div><div style="margin-top:8px; font-weight:bold; font-size:10px; color:#e74c3c">FALTAM NO MÊS:</div>`;
+            let idDiv = "sup_" + sup.nome.split(' ')[0];
+            
+            let html = `<div class="grupo-supervisor" id="${idDiv}"><div class="header-sup"><span>${sup.nome}</span><span>${realizados}/${sup.lista.length} (${perc}%)</span></div><div class="porcentagem-barra"><div class="porcentagem-fill" style="width:${perc}%"></div></div><div style="margin-top:8px; font-weight:bold; font-size:10px; color:#e74c3c">FALTAM NO MÊS:</div>`;
             if(pends.length === 0) html += "<div style='color:green; font-size:11px; font-weight:bold;'>✅ Meta Mensal Batida!</div>";
             else pends.forEach(p => html += `<div class="linha-pendente">• ${p}</div>`);
             corpoG.innerHTML += html + `</div>`;
         });
+
         document.getElementById('modalHistorico').style.display = "block";
     }
 
     window.fecharHistorico = () => document.getElementById('modalHistorico').style.display = "none";
-
-    window.apagarUm = async function(id) {
-        if(confirm("Apagar registro permanentemente da nuvem?")) {
-            await deleteDoc(doc(db, "registros", id));
-        }
-    }
-
-    window.limparTudo = () => alert("Função desabilitada por segurança na nuvem.");
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-          .then(() => console.log('Service Worker Registrado!'))
-          .catch((erro) => console.log('Erro SW:', erro));
-    }
+    window.apagarUm = async function(id) { if(confirm("Apagar?")) await deleteDoc(doc(db, "registros", id)); }
+    window.limparTudo = () => alert("Acesso restrito.");
 </script>
 </body>
 </html>
