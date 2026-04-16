@@ -1,20 +1,20 @@
 {
   "short_name": "STC Digital",
-  "name": "STC - Operações ",
+  "name": "STC Operacional Digital",
   "icons": [
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "ICONE.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "ICONE.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "index.html",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#2c3e50",
   "background_color": "#ffffff"
 }
